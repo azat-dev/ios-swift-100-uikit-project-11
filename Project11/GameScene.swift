@@ -25,6 +25,11 @@ class GameScene: SKScene {
         
         addChild(slotBase)
         addChild(slotGlow)
+        
+        let spin = SKAction.rotate(byAngle: CGFloat.pi, duration: 10)
+        let spinForever = SKAction.repeatForever(spin)
+        
+        slotGlow.run(spinForever)
     }
     
     private func makeBouncer(at position: CGPoint) {
