@@ -14,8 +14,18 @@ class GameScene: SKScene {
         background.position = .init(x: 512, y: 384)
         background.blendMode = .replace
         addChild(background)
+        
+       physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else {
+            return
+        }
+        
+        let box = SKSpriteNode(color: .red, size: .init(width: 64, height: 64))
+        box.position = touch.location(in: self)
+        box.physicsBody = SKPhysicsBody(rectangleOf: .init(width: 64, height: 64))
+        addChild(box)
     }
 }
