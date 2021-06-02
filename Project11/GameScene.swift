@@ -9,6 +9,14 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var scoreLabel: SKLabelNode!
+    
+    var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
+    
     private func makeSlot(at position: CGPoint, isGood: Bool) {
         let slotBase: SKSpriteNode
         let slotGlow: SKSpriteNode
@@ -47,6 +55,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(bouncer)
     }
     
+    func initScoreLabel() {
+        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.position = CGPoint(x: 980, y: 700)
+        scoreLabel.text = "Score: 0"
+        addChild(scoreLabel)
+    }
+    
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
         
@@ -68,6 +84,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         makeSlot(at: CGPoint(x: 384, y: 0), isGood: false)
         makeSlot(at: CGPoint(x: 640, y: 0), isGood: true)
         makeSlot(at: CGPoint(x: 896, y: 0), isGood: false)
+        
+        initScoreLabel()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -91,8 +109,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func collisionBetween(ball: SKNode, body: SKNode) {
         if body.name == "good" {
             destroy(ball: ball)
+            score += 1
         } else if body.name == "bad" {
             destroy(ball: ball)
+            score -= 1
         }
     }
     
